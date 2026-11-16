@@ -10,13 +10,13 @@ Gestion-Auto est une application destinée à faciliter la gestion des activité
 - **Gestion des véhicules :** enregistrement et suivi des véhicules.
 - **Gestion des motos :** enregistrement et suivi des motos.
 - **Gestion des clients :** création et consultation des fiches clients.
-- **Gestion des achats :** suivi des acquisitions de véhicules et articles.
+- **Gestion des achats :** suivi des acquisitions de véhicules et d'articles.
 - **Gestion des ventes :** suivi des ventes et des détails associés.
 - **Gestion des locations :** enregistrement et suivi des locations.
-- **Gestion des paiements :** suivi des règlements et modes de paiement.
+- **Gestion des paiements :** suivi des règlements et des modes de paiement.
 - **Gestion de la caisse :** suivi des entrées et sorties d'argent.
 - **Gestion des dépenses :** enregistrement et suivi des dépenses.
-- **Gestion des pièces et du stock :** suivi des articles et mouvements de stock.
+- **Gestion des pièces et du stock :** suivi des articles et des mouvements de stock.
 - **Gestion des reçus :** génération des reçus.
 - **Sauvegardes :** fonctionnalités de sauvegarde des données.
 
@@ -59,11 +59,21 @@ npm install
 
 ### 5. Configurer l'environnement
 
-```bash
+Sur Windows :
+
+```cmd
 copy .env.example .env
 ```
 
-Configurer ensuite les paramètres de connexion à la base de données dans le fichier `.env`.
+Sur Linux ou macOS :
+
+```bash
+cp .env.example .env
+```
+
+Configurer ensuite les paramètres de connexion à MySQL dans le fichier `.env`.
+
+Créer également une base de données MySQL, par exemple `gestion_auto`.
 
 ### 6. Générer la clé de l'application
 
@@ -71,27 +81,54 @@ Configurer ensuite les paramètres de connexion à la base de données dans le f
 php artisan key:generate
 ```
 
-### 7. Créer la base de données
-
-Créer une base de données MySQL, puis exécuter :
+### 7. Exécuter les migrations
 
 ```bash
 php artisan migrate --seed
 ```
 
-### 8. Compiler les ressources
+Cette commande crée les tables nécessaires à l'application. Le seeder ne crée pas automatiquement de compte administrateur.
+
+### 8. Créer le compte administrateur
+
+Lancer Laravel Tinker :
+
+```bash
+php artisan tinker
+```
+
+Exécuter ensuite les instructions suivantes en remplaçant l'adresse électronique et le mot de passe par tes propres identifiants :
+
+```php
+$u = new App\Models\User();
+$u->name = 'Administrateur';
+$u->email = 'adresse@exemple.com';
+$u->password = Hash::make('MotDePasseTemporaire');
+$u->email_verified_at = now();
+$u->save();
+```
+
+Quitter Tinker :
+
+```php
+exit
+```
+
+### 9. Compiler les ressources
 
 ```bash
 npm run build
 ```
 
-### 9. Démarrer l'application
+### 10. Démarrer l'application
 
 ```bash
 php artisan serve
 ```
 
-Ouvrir ensuite : http://127.0.0.1:8000
+Ouvrir ensuite l'application dans le navigateur :
+
+http://127.0.0.1:8000
 
 ## Auteur
 
